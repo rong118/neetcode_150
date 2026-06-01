@@ -4,19 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a personal practice repository of Go solutions for NeetCode 150 / LeetCode algorithm problems. Solutions are organized by algorithmic category and follow LeetCode's submission format (just the function, no `package main` or `main()`).
+This is a personal practice repository of Python solutions for the [NeetCode 150](https://neetcode.io/practice/practice/neetcode150) — a curated set of 150 LeetCode algorithm problems covering essential algorithms and data structures for coding interviews.
 
 ## How Solutions Are Structured
 
-- **No `go.mod`** — this is not a buildable Go module. Solutions are meant to be pasted directly into the LeetCode editor.
-- **No package declarations** — files omit `package main` (except `49_group_anagrams.go` and `tree/test.go`). This is intentional: LeetCode provides the package wrapper.
-- **No `main()` functions** — solutions are pure algorithm functions that accept inputs and return outputs, matching LeetCode's expected signature.
-- **LeetCode-provided types** — `TreeNode`, `ListNode`, and similar types are defined by the LeetCode platform and referenced in comments at the top of relevant files. They are not defined in this repo.
-- **Multiple implementations per file are common** — different approaches (iterative, recursive, optimized) live side-by-side as separate functions. This means files will NOT compile as-is due to duplicate function names; each variant is meant to be submitted independently.
+- Each `.py` file includes a **docstring** with the problem number, name, difficulty, and LeetCode URL.
+- **LeetCode types** (`TreeNode`, `ListNode`, `TrieNode`) are defined as classes within the solution files — every solution is self-contained.
+- All functions use **type hints** (`List[int]`, `Optional[TreeNode]`, etc.).
+- Each file contains a single canonical implementation — the cleanest/most efficient approach.
+- Files are named `<leetcode_problem_number>_<snake_case_name>.py`.
+- There is no `requirements.txt` — only the Python standard library is used.
 
 ## Directory Structure
 
-Each subdirectory corresponds to a problem category. Files are named `<leetcode_problem_number>_<name>.go`:
+Each subdirectory corresponds to a NeetCode 150 category:
 
 | Directory | Topic |
 |---|---|
@@ -33,21 +34,34 @@ Each subdirectory corresponds to a problem category. Files are named `<leetcode_
 
 ## Adding a New Solution
 
-When adding a new problem solution:
-
 1. Place it in the appropriate category directory.
-2. Name it `<problem_number>_<snake_case_name>.go`.
-3. Include only the solution function(s) — no `package` declaration, no `main()`.
-4. If the problem uses LeetCode-provided types (`TreeNode`, `ListNode`), add the type definition as a comment block at the top (see existing files for the format).
-5. Add all necessary Go imports (e.g., `"math"`, `"fmt"`) — even if the file won't build locally, this ensures correctness when pasted into LeetCode.
+2. Name it `<problem_number>_<snake_case_name>.py`.
+3. Include a docstring with: problem number, name, difficulty, and LeetCode URL.
+4. Define any needed LeetCode types (`TreeNode`, `ListNode`, `TrieNode`) as classes in the file.
+5. Use type hints on all function signatures.
+6. Update the README.md table to mark it as done.
+7. Use 4-space indentation.
 
 ## Code Style
 
-- Follow the existing style: minimal comments, short variable names (`m` for maps, `ans` for result slices), early returns.
-- Use `//` comments to label alternative implementations (e.g., `// Iterative version`, `// Recursive version`).
-- Tabs for indentation (Go standard).
+- 4-space indentation (no tabs).
+- Descriptive variable names (`char_index`, `max_profit`, not `m`, `ans`).
+- Type hints on all function signatures.
+- Minimal inline comments; the docstring explains the problem.
+- No `if __name__ == "__main__"` blocks — files are self-contained function definitions meant to be submitted to LeetCode.
 
-## Notable Files
+## Running / Testing
 
-- `tree/test.go` — scratch file for experimenting with Go slice behavior. Not a LeetCode solution. Can be ignored or deleted.
-- `1_two_sum.go` — contains two `twoSum` functions (duplicate). Each is a standalone variant.
+There is no test suite. To verify syntax:
+
+```bash
+python3 -c "import py_compile; py_compile.compile('path/to/file.py', doraise=True)"
+```
+
+Or to check all files:
+
+```bash
+for f in $(find . -name "*.py" -type f); do
+  python3 -c "import py_compile; py_compile.compile('$f', doraise=True)" && echo "OK: $f" || echo "FAIL: $f"
+done
+```
